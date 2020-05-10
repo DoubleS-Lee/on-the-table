@@ -39,11 +39,17 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = ["django_countries"]
 
 PROJECT_APPS = [
-    "users.apps.UsersConfig"
-]
+    "core.apps.CoreConfig", 
+    "users.apps.UsersConfig",
+    "contents.apps.ContentsConfig", 
+    "reviews.apps.ReviewsConfig", 
+    "wishlists.apps.WishlistsConfig",
+    "conversations.apps.ConversationsConfig",
+    ]
+
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
@@ -128,3 +134,7 @@ STATIC_URL = '/static/'
 
 # 디폴트로 세팅 되어 있는 user를 내가 만든거로 변경해준다
 AUTH_USER_MODEL = "users.User"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+
+MEDIA_URL = "/media/"

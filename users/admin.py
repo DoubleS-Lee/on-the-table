@@ -19,12 +19,23 @@ class CustomUserAdmin(UserAdmin):
             "Custom Profile",
             {
                 "fields": (
+                    "nickname",
                     "avatar",
                     "gender",
                     "bio",
                     "birthdate",
                     "language",
+                    "nationality",
                 )
             },
         ),
+    )
+
+    list_filter = UserAdmin.list_filter + ("nationality",)
+
+    list_display = (
+        "nickname",
+        "gender",
+        "language",
+        "nationality",
     )
