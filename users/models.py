@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django_countries.fields import CountryField
 from django.db import models
 
+
 #abstract는 코드내에서만 잠깐쓰이고 데이터베이스에 저장되지는 않는다
 class User(AbstractUser):
 

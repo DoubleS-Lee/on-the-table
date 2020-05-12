@@ -1,6 +1,14 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from . import models
+from contents import models as content_models
+
+#user에 연결된 content를 볼수있게 하는 코드
+#밑에 ContentAdmin 클래스에 inlines = (ContentInline,)를 추가해야한다
+class ContentInline(admin.TabularInline):
+
+    model = content_models.Content
+    extra = 1
 
 #@를 Decorator라고 부른다
 #admin 패널에서 이 user를 보고싶다 라는 뜻임
@@ -10,6 +18,8 @@ from . import models
 class CustomUserAdmin(UserAdmin):
     
     """ Custom User Admin """
+
+    inlines = (ContentInline,)
 
     #장고 admin 화면에 fieldset(파란색바)을 하나 만들어준다
     #내가 새로 정의한 정보들을 모아놓았음
@@ -39,3 +49,4 @@ class CustomUserAdmin(UserAdmin):
         "language",
         "nationality",
     )
+

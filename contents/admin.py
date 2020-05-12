@@ -12,19 +12,28 @@ class ItemAdmin(admin.ModelAdmin):
     def count_contents(self, obj):
         return obj.contents.count()
 
+#content에 연결된 photo를 볼수있게 하는 코드
+#밑에 ContentAdmin 클래스에 inlines = (PhotoInline,)를 추가해야한다
+class PhotoInline(admin.TabularInline):
+
+    model = models.Photo
+    extra = 1
 
 @admin.register(models.Content)
 class ContentAdmin(admin.ModelAdmin):
 
     """ Content Admin Definition """
 
+    inlines = (PhotoInline,)
+
     fieldsets = (
         (
             "Basic Info",
             {"fields": ("title", "description")},
         ),
-        ("Dish Info", {"fields": ("dish", "country_of_dish", )}),
+        ("Dish Info", {"fields": ("dish", )}),
         ("How to Cook", {'classes': ('collapse',), "fields": ("cooking_ingredients", "cuisine", "cooking_utensils", )}),
+        ("Last Details", {"fields": ("user",)}),
     )
     
     list_display = (
@@ -32,7 +41,6 @@ class ContentAdmin(admin.ModelAdmin):
         "dish",
         "description",
         "cuisine",
-        "country_of_dish",
         "cooking_ingredients",
         "user",
         "count_cooking_utensils",
@@ -45,9 +53,11 @@ class ContentAdmin(admin.ModelAdmin):
         #ForgeignKey의 속성을 이용해서 user내의 다른 정보들을 가져오고 싶을때 __를 사용한다
         "user__gender",
         "cooking_utensils",
-        "country_of_dish",
         
     )
+
+    #admin 패널안의 user가 너무 많아지면 선택하기 힘드니까 검색할수있는 장치를 만드는 것
+    raw_id_fields = ("user",)
 
     search_fields = [
         "title",
@@ -66,7 +76,6 @@ class ContentAdmin(admin.ModelAdmin):
     ordering =(
         "title",
         "dish",
-        "country_of_dish",
         )
 
     #list_display에서 ManytoMany타입의 정보를 개수의 형태로 나타내고 싶을때 함수를 사용해서 나타낸다
@@ -75,7 +84,9 @@ class ContentAdmin(admin.ModelAdmin):
         return obj.cooking_utensils.count()
 
     def count_photos(self, obj):
-        return obj.photos.count()    
+        return obj.photos.count()
+
+    count_photos.short_description = "Photo Count"    
 
 @admin.register(models.Photo)
 class PhotoAdmin(admin.ModelAdmin):

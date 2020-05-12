@@ -51,7 +51,6 @@ class Content(core_models.TimeStampedModel):
     dish = models.CharField(max_length=140)
     description = models.TextField()
     cuisine = models.TextField()
-    country_of_dish = CountryField()
     cooking_ingredients = models.TextField()
     #related_name을 설정하는 이유는 장고의 ORM 기능을 활용하기 위해서
     #related_name은 대상(contents)이 나(user)를 찾는 방식이다
@@ -64,3 +63,4 @@ class Content(core_models.TimeStampedModel):
     #str 형식으로 반환해줄 데이터를 정의해준다
     def __str__(self):
         return self.dish
+
