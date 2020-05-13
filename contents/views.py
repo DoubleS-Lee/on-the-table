@@ -1,3 +1,6 @@
 from django.shortcuts import render
+from . import models
 
-# Create your views here.
+def all_contents(request):
+    all_contents = models.Content.objects.all()
+    return render(request, "contents/home.html", context={"potato": all_contents})
