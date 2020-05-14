@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% block page_name %}
+    Home
+{% endblock page_name %}
+
+{% block contents_list %}
+
+    {% for content in contents_group  %}
+        <h3>
+            <a href="{% url "contents:detail" content.pk %}">
+                {{content.title}} / {{content.dish}}
+            </a>
+        </h3>
+    {% endfor %}
+
+    <h5>
+    {% if page_obj.has_previous %}
+        <a href="?page={{page_obj.previous_page_number}}">이전</a>
+    {% endif %}
+
+    {% if page_obj.has_previous and page_obj.has_next %}
+        |
+    {% endif %}
+
+    {% if page_obj.has_next  %}
+        <a href="?page={{page_obj.next_page_number}}">다음</a>
+    {% endif %}
+
+
+    </h5>
+
+
+{% endblock contents_list %}

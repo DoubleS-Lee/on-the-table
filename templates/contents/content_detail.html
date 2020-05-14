@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+
+{% block page_title %}
+    Home
+{% endblock page_title %}
+
+{% block contents_list %}
+<div>
+    <h1>{{content.title}}</h1>
+    <h3>{{content.description}}</h3>
+</div>
+<div>
+    <h2>작성자 : {{content.user.nickname}}
+    </h2>
+    <h3>요리명</h3>
+    <ul>
+        {{content.dish}}
+    </ul>
+    <h3>국적</h3>
+    <ul>
+        {{content.user.nationality}}
+    </ul>
+     <h3>요리재료</h3>
+    <ul>
+        {{content.cooking_ingredients}}
+    </ul>
+     <h3>요리법</h3>
+    <ul>
+        {{content.cuisine}}
+    </ul>
+     <h3>조리기구</h3>
+    <ul>
+        {% for a in content.cooking_utensils.all  %}
+            <li>{{a}}</li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock contents_list %}

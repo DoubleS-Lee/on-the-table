@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Search
+{% endblock page_title %}
+
+{% block search-bar %}
+
+{% endblock search-bar %}
+
+{% block contents_list %}
+
+    <form method="get" action="{% url "contents:search" %}">
+        {{form.as_p}}
+        <button>Search</button>
+    </form>
+
+    <h3>Results</h3>
+
+    {% for content in contents %}
+        <h3>{{content.title}}</h3>
+    {% endfor %}
+
+{% endblock contents_list %} 

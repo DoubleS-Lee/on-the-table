@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django_countries.fields import CountryField
 from core import models as core_models
 from users import models as user_models
@@ -59,6 +60,10 @@ class Content(core_models.TimeStampedModel):
     #이제 2에서 1을 찾기 위해서는 related_name으로 다시 연결해줘야된다는 것이다
     user = models.ForeignKey("users.User", related_name="contents", on_delete=models.CASCADE)
     cooking_utensils = models.ManyToManyField("CookingUtensil", related_name="contents", blank=True)
+
+    #장고 admin 페이지에 view on site라고 실제로 홈페이지 화면에서 어떻게 보이는지 볼 수 있는 버튼을 생성한다
+    def get_absolute_url(self):
+        return reverse("contents:detail", kwargs={"pk": self.pk}) 
 
     #str 형식으로 반환해줄 데이터를 정의해준다
     def __str__(self):
