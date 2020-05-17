@@ -45,6 +45,7 @@ class CustomUserAdmin(UserAdmin):
 
     list_display = (
         "nickname",
+        "email",
         "gender",
         "language",
         "nationality",

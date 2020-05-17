@@ -4,7 +4,7 @@
 {% block page_title %}
     Home
 {% endblock page_title %}
-
+    {{content.title}}
 {% block contents_list %}
 <div>
     <h1>{{content.title}}</h1>
@@ -17,7 +17,7 @@
     <ul>
         {{content.dish}}
     </ul>
-    <h3>국적</h3>
+    <h3>국가</h3>
     <ul>
         {{content.user.nationality}}
     </ul>

@@ -48,18 +48,18 @@ class Photo(core_models.TimeStampedModel):
 
 class Content(core_models.TimeStampedModel):
 
-    title = models.CharField(max_length=140)
-    dish = models.CharField(max_length=140)
-    description = models.TextField()
-    cuisine = models.TextField()
-    cooking_ingredients = models.TextField()
+    title = models.CharField(max_length=140, help_text="제목")
+    dish = models.CharField(max_length=140, help_text="요리명")
+    description = models.TextField(help_text="게시글 코멘트")
+    cuisine = models.TextField(help_text="요리법")
+    cooking_ingredients = models.TextField(help_text="요리 재료")
     #related_name을 설정하는 이유는 장고의 ORM 기능을 활용하기 위해서
     #related_name은 대상(contents)이 나(user)를 찾는 방식이다
     #user가 어떻게 우리(content)를 찾기 원하는지 설정하기 위해
     #foreingkey와 manytomany가 1과 2를 이어주는 방식이면
     #이제 2에서 1을 찾기 위해서는 related_name으로 다시 연결해줘야된다는 것이다
-    user = models.ForeignKey("users.User", related_name="contents", on_delete=models.CASCADE)
-    cooking_utensils = models.ManyToManyField("CookingUtensil", related_name="contents", blank=True)
+    user = models.ForeignKey("users.User", related_name="contents", on_delete=models.CASCADE, help_text="작성자")
+    cooking_utensils = models.ManyToManyField("CookingUtensil", related_name="contents", blank=True, help_text="요리기구")
 
     #장고 admin 페이지에 view on site라고 실제로 홈페이지 화면에서 어떻게 보이는지 볼 수 있는 버튼을 생성한다
     def get_absolute_url(self):
