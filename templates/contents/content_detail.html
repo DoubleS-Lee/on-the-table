@@ -6,35 +6,80 @@
 {% endblock page_title %}
     {{content.title}}
 {% block contents_list %}
-<div>
-    <h1>{{content.title}}</h1>
-    <h3>{{content.description}}</h3>
-</div>
-<div>
-    <h2>작성자 : {{content.user.nickname}}
-    </h2>
-    <h3>요리명</h3>
-    <ul>
-        {{content.dish}}
-    </ul>
-    <h3>국가</h3>
-    <ul>
-        {{content.user.nationality}}
-    </ul>
-     <h3>요리재료</h3>
-    <ul>
-        {{content.cooking_ingredients}}
-    </ul>
-     <h3>요리법</h3>
-    <ul>
-        {{content.cuisine}}
-    </ul>
-     <h3>조리기구</h3>
-    <ul>
-        {% for a in content.cooking_utensils.all  %}
-            <li>{{a}}</li>
-        {% endfor %}
-    </ul>
 
+<div class="-mt-5 container max-w-full h-75vh flex mb-20">
+    <div class="h-full w-1/2 bg-center bg-cover" style="background-image:url({{content.first_photo}})"></div>
+    <div class="h-full w-1/2 flex flex-wrap">
+        {% for photo in content.get_next_four_photos %}
+            <div style="background-image:url({{photo.file.url}})" class="w-1/2 h-auto bg-cover bg-center border-gray-700 border"></div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="container mx-auto flex justify-around pb-56">
+    <div class="w-1/2">
+        <div class="flex justify-between">
+            <div class="mb-5">
+                <h4 class="text-3xl font-medium mb-px">{{content.title}}</h4>
+                <span class="text-gray-700 font-light">{{content.description}}</span>
+            </div>
+            <a href="{{content.user.get_absolute_url}}" class="flex flex-col items-center">
+                {% include "mixins/user_avatar.html" with user=content.user %}
+                <span class="mt-2 text-gray-500">{{content.user.nickname}}</span>
+                <span class="mr-5 font-light">{{content.user.nationality}}</span>
+            </a>
+        </div>
+        <p class="flex border-section">
+            <h4 class="font-medium text-lg mb-5">요리명</h4>
+            {{content.dish}}
+        </p>
+        <p class="border-section">
+            <h4 class="font-medium text-lg mb-5">한마디</h4>
+            {{content.description}}
+        </p>
+        
+        <p class="border-section">
+            <h4 class="font-medium text-lg mb-5">요리법</h4>
+            {{content.cuisine}}
+        </p>
+        
+        <p class="border-section">
+            <h4 class="font-medium text-lg mb-5">요리재료</h4>
+            {{content.cooking_ingredients}}
+        </p>
+
+        <div class="border-section">
+            <h4 class="font-medium text-lg mb-5">조리기구</h4>
+            {% for a in content.cooking_utensils.all  %}
+                <li class="mb-2">{{a}}</li>
+            {% endfor %}
+        </div>
+
+        <div class="mt-10">
+            <h4 class="font-medium text-2xl mb-5">Reviews</h4>
+
+            <div class="mt-10">
+                {% for review in content.reviews.all  %}
+                    <div class="border-section">
+                        <div class="mb-3 flex">
+                            <div>
+                                {% include "mixins/user_avatar.html" with user=review.user h_and_w='w-10 h-10' text='text-xl' %}
+                            </div>
+                            <div class="flex flex-col ml-5">
+                                <span class="font-medium">{{review.user.nickname}}</span>
+                                <span class="text-sm text-gray-500">{{review.created|date:'d F Y'}}</span>
+                            </div>
+                        </div>
+                        <p>{{review.review}}</p>
+                    </div>
+                {% endfor %}    
+            </div>
+        </div>
+    </div>
+    <div class="w-1/3">
+        {% if content.user == user %}
+            <a href="{% url 'contents:edit' content.pk %}" class="btn-link block">Edit Content</a>
+        {% endif %}
+    </div>
 </div>
 {% endblock contents_list %}

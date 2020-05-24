@@ -1,0 +1,21 @@
+<div class="w-1/4 mb-10 px-2">
+    <a href="{% url "contents:detail" content.pk %}">
+        <div class="w-full h-64 bg-cover bg-center rounded-lg " style="background-image: url({{content.first_photo}});"></div>
+    </a>
+    <div class="flex justify-between overflow-hidden">
+        <div class="text-xs flex items-center justify-between">
+            <i class="fas fa-drumstick-bite mt-1 px-1" style ="color:rgb(245, 141, 23)"></i>
+            <span class="font-semibold pl-1 w-7/8 block truncate">{{content.dish}}</span>   
+        </div>
+        <span class="text-sm text-gray-600 ">{{content.user}}</span>  
+    </div>
+    <div class="flex justify-between items-center overflow-hidden truncate">
+        <span class="pl-1 text-sm text-black">
+            {{content.title}}
+        </span>
+        <span class="text-xs">
+            {{content.user.nationality}}
+        </span>
+    </div>
+</div>
+

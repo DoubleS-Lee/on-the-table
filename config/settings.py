@@ -132,6 +132,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
 # 디폴트로 세팅 되어 있는 user를 내가 만든거로 변경해준다
 AUTH_USER_MODEL = "users.User"
 
@@ -139,3 +141,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 
 MEDIA_URL = "/media/"
 
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+
+# Auth
+
+LOGIN_URL = "/users/login/"

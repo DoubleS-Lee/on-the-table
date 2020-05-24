@@ -6,30 +6,32 @@
 {% endblock page_name %}
 
 {% block contents_list %}
-
-    {% for content in contents_group  %}
-        <h3>
-            <a href="{% url "contents:detail" content.pk %}">
-                {{content.title}} / {{content.dish}}
+    <div class="mt-2 container mx-auto">
+        <div class = "flex flex-wrap -mx-40">
+            {% for content in contents_group  %}
+                {% include 'mixins/content_card.html' with content=content %}
+            {% endfor %}
+        </div>
+        <div class="mx-3 mb-10 flex items-center justify-center mx-auto container">
+        {% if page_obj.has_previous %}
+            <a href="?page={{page_obj.previous_page_number}}">
+                <i class="fas fa-arrow-left fa-2x" style="color:rgb(24, 223, 156)"></i>
             </a>
-        </h3>
-    {% endfor %}
+        {% endif %}
 
-    <h5>
-    {% if page_obj.has_previous %}
-        <a href="?page={{page_obj.previous_page_number}}">이전</a>
-    {% endif %}
+        {% if page_obj.has_previous and page_obj.has_next %}
+            <i class="fas fa-grip-lines-vertical px-5 fa-2x" style="color:rgb(98, 102, 101)"></i>
+        {% endif %}
 
-    {% if page_obj.has_previous and page_obj.has_next %}
-        |
-    {% endif %}
+        {% if page_obj.has_next  %}
+            <a href="?page={{page_obj.next_page_number}}">
+                <i class="fas fa-arrow-right fa-2x" style="color:rgb(24, 223, 156)"></i>
+            </a>
+        {% endif %}
 
-    {% if page_obj.has_next  %}
-        <a href="?page={{page_obj.next_page_number}}">다음</a>
-    {% endif %}
-
-
-    </h5>
+        </div>
+    </div>
+    
 
 
 {% endblock contents_list %}

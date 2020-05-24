@@ -1,9 +1,10 @@
-<a href="{% url "core:home" %}">OntheTable</a>
-<ul>
+<ul class="flex items-center text-sm font-medium h-full">
     {% if user.is_authenticated %}
-        <li><a href="{% url "users:logout" %}">로그아웃</a></li>
+        <li class="nav_link"><a href="{{user.get_absolute_url}}">마이페이지</a></li>
+        <li class="nav_link"><a href="{% url 'contents:create' %}">글 작성</a></li>
+        <li class="nav_link"><a href="{% url "users:logout" %}">로그아웃</a></li>        
     {% else %}
-        <li><a href="{% url "users:login" %}">로그인</a></li>
-        <li><a href="{% url "users:signup" %}">회원가입</a></li>
+        <li class="nav_link"><a href="{% url "users:login" %}">로그인</a></li>
+        <li class="nav_link"><a href="{% url "users:signup" %}">회원가입</a></li>
     {% endif %}
 </ul>

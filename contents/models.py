@@ -68,4 +68,14 @@ class Content(core_models.TimeStampedModel):
     #str 형식으로 반환해줄 데이터를 정의해준다
     def __str__(self):
         return self.dish
+        
+    def first_photo(self):
+        try:
+            photo, = self.photos.all()[:1]
+            return photo.file.url
+        except ValueError:
+            return None
 
+    def get_next_four_photos(self):
+        photos = self.photos.all()[1:5]
+        return photos

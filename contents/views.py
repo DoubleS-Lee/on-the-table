@@ -1,6 +1,11 @@
-from django.views.generic import ListView, DetailView, View
-from django.shortcuts import render
+from django.http import Http404
+from django.views.generic import ListView, DetailView, View, UpdateView, FormView
+from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
+from users import mixins as user_mixins
 from . import models, forms
 
 class HomeView(ListView):
@@ -8,7 +13,7 @@ class HomeView(ListView):
     """ HomeView Definition """
 
     model = models.Content
-    paginate_by = 10
+    paginate_by = 12
     paginate_orphans = 5
     ordering = "created"
     context_object_name = "contents_group"
@@ -77,7 +82,7 @@ class SearchView(View):
                 else:
                     pass
                 
-                paginator = Paginator(qs, 10, orphans=5)
+                paginator = Paginator(qs, 12, orphans=5)
 
                 page = request.GET.get("page", 1)
 
@@ -92,3 +97,89 @@ class SearchView(View):
         else:
             form = forms.SearchForm()
         return render(request, "contents/search.html", {"form": form})
+
+class EditContentView(user_mixins.LoggedInOnlyView, UpdateView):
+
+    model = models.Content
+    template_name = "contents/content_edit.html"
+    fields = (
+        "title",
+        "dish",
+        "description",
+        "cuisine",
+        "cooking_ingredients",
+        "cooking_utensils",
+    )
+
+    def get_object(self, queryset=None):
+        content = super().get_object(queryset=queryset)
+        if content.user.pk != self.request.user.pk:
+            raise Http404()
+        return content
+
+
+class ContentPhotosView(user_mixins.LoggedInOnlyView, DetailView):
+
+    model = models.Content
+    template_name = "contents/content_photos.html"
+
+    def get_object(self, queryset=None):
+        content = super().get_object(queryset=queryset)
+        if content.user.pk != self.request.user.pk:
+            raise Http404()
+        return content
+
+@login_required
+def delete_photo(request, content_pk, photo_pk):
+    user = request.user
+    try:
+        content = models.Content.objects.get(pk=content_pk)
+        if content.user.pk != user.pk:
+            messages.error(request, "Cant delete that photo")
+        else:
+            models.Photo.objects.filter(pk=photo_pk).delete()
+            messages.success(request, "Photo Deleted")
+        return redirect(reverse("contents:photos", kwargs={"pk": content_pk}))
+    except models.Content.DoesNotExist:
+        return redirect(reverse("core:home"))
+
+
+class EditPhotoView(user_mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
+
+    model = models.Photo
+    template_name = "contents/photo_edit.html"
+    pk_url_kwarg = "photo_pk"
+    success_message = "Photo Updated"
+    fields = ("caption",)
+
+    def get_success_url(self):
+        content_pk = self.kwargs.get("content_pk")
+        return reverse("contents:photos", kwargs={"pk": content_pk})
+
+
+class AddPhotoView(user_mixins.LoggedInOnlyView, FormView):
+
+    model = models.Photo
+    template_name = "contents/photo_create.html"
+    fields = ("caption", "file")
+    form_class = forms.CreatePhotoForm
+
+    def form_valid(self, form):
+        pk = self.kwargs.get("pk")
+        form.save(pk)
+        messages.success(self.request, "Photo Uploaded")
+        return redirect(reverse("contents:photos", kwargs={"pk": pk}))
+
+class CreateContentView(user_mixins.LoggedInOnlyView, FormView):
+
+    form_class = forms.CreateContentForm
+    template_name = "contents/content_create.html"
+
+    def form_valid(self, form):
+        content = form.save()
+        content.user = self.request.user
+        content.save()
+        #MtoM 데이터를 저장하게 해주는 코드
+        form.save_m2m()
+        messages.success(self.request, "Content Uploaded")
+        return redirect(reverse("contents:detail", kwargs={"pk": content.pk}))

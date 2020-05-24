@@ -49,5 +49,6 @@ class CustomUserAdmin(UserAdmin):
         "gender",
         "language",
         "nationality",
+        "is_active",
     )
 
