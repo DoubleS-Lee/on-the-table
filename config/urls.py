@@ -22,6 +22,7 @@ urlpatterns = [
     path("", include("core.urls", namespace="core")),
     path("contents/", include("contents.urls", namespace="contents")),
     path("users/", include("users.urls", namespace="users")),
+    path("wishlists/", include("wishlists.urls", namespace="wishlists")),
     path('admin/', admin.site.urls),
 ]
 

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load on_favs %}
 
 
 {% block page_title %}
@@ -29,6 +30,14 @@
                 <span class="mr-5 font-light">{{content.user.nationality}}</span>
             </a>
         </div>
+
+        {% on_favs content as on_favs_boolean %}
+        {% if on_favs_boolean %}
+            <a class="block mb-10 w-2/6 text-teal-600 font-bold" href="{% url 'wishlists:toggle-content' content.pk %}?action=remove">Remove from Favourites</a>
+        {% else %}
+            <a class="block mb-10 w-2/6 text-teal-600 font-bold" href="{% url 'wishlists:toggle-content' content.pk %}?action=add">Save to Favourites</a>
+        {% endif %}
+
         <p class="flex border-section">
             <h4 class="font-medium text-lg mb-5">요리명</h4>
             {{content.dish}}

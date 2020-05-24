@@ -1,5 +1,6 @@
 <ul class="flex items-center text-sm font-medium h-full">
     {% if user.is_authenticated %}
+        <li class="nav_link"><a href="{% url 'wishlists:see-favs' %}">즐겨찾기</a></li>
         <li class="nav_link"><a href="{{user.get_absolute_url}}">마이페이지</a></li>
         <li class="nav_link"><a href="{% url 'contents:create' %}">글 작성</a></li>
         <li class="nav_link"><a href="{% url "users:logout" %}">로그아웃</a></li>        

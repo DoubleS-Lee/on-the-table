@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    {{user.nickname}}'s Fav
+{% endblock page_title %}
+
+{% block contents_list %}
+
+    <div class="min-h-75vh">
+
+        <h3 class="mb-12 text-2xl text-center">Your Favourites</h3>
+
+
+    <div class="container mx-auto pb-10 ">
+        <div class="flex flex-wrap -mx-40 mb-10">
+            {% for content in user.wishlist.contents.all  %}
+                {% include 'mixins/content_card.html' with content=content %}
+            {% endfor %}
+        </div>
+    </div>
+
+
+    </div>
+{% endblock contents_list %} 
