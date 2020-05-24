@@ -150,7 +150,7 @@ class EditPhotoView(user_mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateVie
     template_name = "contents/photo_edit.html"
     pk_url_kwarg = "photo_pk"
     success_message = "Photo Updated"
-    fields = ("caption",)
+    fields = ("caption", "file")
 
     def get_success_url(self):
         content_pk = self.kwargs.get("content_pk")

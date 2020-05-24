@@ -12,7 +12,7 @@
     <div class="container mx-auto my-10 flex flex-col">
 
         <div class="my-10 w-full">
-            <a href="{% url 'contents:add-photo' content.pk %}" class="btn-link w-1/6 block">Upload Photo</a>
+            <a href="{% url 'contents:add-photo' content.pk %}" class="btn-link w-1/6 block">사진추가</a>
         </div>
 
         {% for photo in content.photos.all  %}
@@ -22,8 +22,8 @@
                     <span class="ml-5 text-xl">{{photo.caption}}</span>
                 </div>
                 <div class="flex flex-col w-1/5">
-                    <a class="btn-link mb-5 bg-teal-500" href="{% url 'contents:edit-photo' content.pk photo.pk %}">Edit</a>
-                    <a class="btn-link bg-red-600" href="{% url 'contents:delete-photo' content.pk photo.pk %}">Delete</a>
+                    <a class="btn-link mb-5 bg-teal-500" href="{% url 'contents:edit-photo' content.pk photo.pk %}">수정</a>
+                    <a class="btn-link bg-red-600" href="{% url 'contents:delete-photo' content.pk photo.pk %}">삭제</a>
                 </div>
             </div>
         {% endfor %}

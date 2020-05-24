@@ -10,35 +10,38 @@
 
 {% block contents_list %}
 
+<div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
     <form method="get" action="{% url "contents:search" %}">
         {{form.as_p}}
-        <button>Search</button>
+        <button>검색</button>
     </form>
+</div>
+    <h1 class="items-center flex container">검색 결과</h1>
 
-    <h3>Results</h3>
 
-    {% for content in contents %}
-    <h3>
-        <a href="{% url "contents:detail" content.pk %}">
-                {{content.title}} / {{content.dish}}
-        </a>
-    </h3>
-    {% endfor %}
+    <div class="mt-2 container mx-auto">
+        <div class = "flex flex-wrap -mx-40">
+            {% for content in contents %}
+                {% include 'mixins/content_card.html' with content=content %}
+            {% endfor %}
+        </div>
+    </div>
 
-    <h3>
-
+    <div class="mx-3 mb-10 flex items-center justify-center mx-auto container">
     {% if contents.has_previous %}
-        <a href="?page={{contents.previous_page_number}}&{{parameters}}">이전</a>
+        <a href="?page={{contents.previous_page_number}}&{{parameters}}">
+            <i class="fas fa-arrow-left fa-2x" style="color:rgb(24, 223, 156)"></i>
+        </a>
     {% endif %}
 
     {% if contents.has_previous and contents.has_next %}
-        |
+        <i class="fas fa-grip-lines-vertical px-5 fa-2x" style="color:rgb(98, 102, 101)"></i>
     {% endif %}
 
     {% if contents.has_next  %}
-        <a href="?page={{contents.next_page_number}}&{{parameters}}">다음</a>
+        <a href="?page={{contents.next_page_number}}&{{parameters}}">
+            <i class="fas fa-arrow-right fa-2x" style="color:rgb(24, 223, 156)"></i>
+        </a>
     {% endif %}
-
-
-    </h3>
+    </div>
 {% endblock contents_list %} 

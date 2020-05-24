@@ -34,7 +34,6 @@ class CustomUserAdmin(UserAdmin):
                     "gender",
                     "bio",
                     "birthdate",
-                    "language",
                     "nationality",
                 )
             },
@@ -47,7 +46,6 @@ class CustomUserAdmin(UserAdmin):
         "nickname",
         "email",
         "gender",
-        "language",
         "nationality",
         "is_active",
     )

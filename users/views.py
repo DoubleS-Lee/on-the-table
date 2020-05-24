@@ -66,10 +66,10 @@ class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView
     template_name = "users/update_profile.html"
     fields = (
         "nickname",
+        "avatar",
         "gender",
         "bio",
         "birthdate",
-        "language",
         "nationality",
     )
 
