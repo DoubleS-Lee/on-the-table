@@ -23,7 +23,7 @@ class User(AbstractUser):
         (GENDER_FEMALE, "여자"),
         (GENDER_OTHER, "기타"),
     )
-
+    
     nickname = models.CharField(max_length=80)
     avatar = models.ImageField(upload_to="avatars", blank=True)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=10, blank=True)
