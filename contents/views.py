@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from users import mixins as user_mixins
 from . import models, forms
+from reviews import forms as review_forms
+
 
 class HomeView(ListView):
 
@@ -68,7 +70,7 @@ class SearchView(View):
                 #https://docs.djangoproject.com/en/3.0/ref/models/querysets/ 에서 Field lookups에 가서 찾아보도록 한다
                 if title is not None:
                     filter_args["title__icontains"] = title
-
+                
                 if dish is not None:
                     filter_args["dish__icontains"] = dish
 
@@ -92,7 +94,7 @@ class SearchView(View):
 
                 parameters = get_copy.pop('page', True) and get_copy.urlencode()
 
-                return render(request, "contents/search.html", {"form": form, "contents": contents, "parameters":parameters})
+                return render(request, "contents/search.html", {"form": form, "contents": contents, "parameters": parameters})
 
         else:
             form = forms.SearchForm()
