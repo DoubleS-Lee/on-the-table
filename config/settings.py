@@ -39,7 +39,7 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-THIRD_PARTY_APPS = ["django_countries", "django_seed"]
+THIRD_PARTY_APPS = ["django_countries", "django_seed", "taggit.apps.TaggitAppConfig", "taggit_templatetags2",]
 
 PROJECT_APPS = [
     "core.apps.CoreConfig", 
@@ -50,7 +50,7 @@ PROJECT_APPS = [
     "conversations.apps.ConversationsConfig",
     ]
 
-INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -151,3 +151,7 @@ EMAIL_USE_TLS = True
 # Auth
 
 LOGIN_URL = "/users/login/"
+
+TAGGIT_CASE_INSENSITIVE = True
+
+TAGGIT_LIMIT = 50

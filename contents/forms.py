@@ -32,6 +32,7 @@ class CreateContentForm(forms.ModelForm):
             "cuisine",
             "cooking_ingredients",
             "cooking_utensils",
+            "tags",
         )
 
     def save(self, *args, **kwargs):

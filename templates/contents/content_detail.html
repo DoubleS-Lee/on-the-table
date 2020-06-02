@@ -31,12 +31,31 @@
             </a>
         </div>
 
-        {% on_favs content as on_favs_boolean %}
-        {% if on_favs_boolean %}
-            <a class="block mb-10 w-2/6 text-teal-600 font-bold" href="{% url 'wishlists:toggle-content' content.pk %}?action=remove">Remove from Favourites</a>
+        {% if user.is_authenticated %}
+            {% on_favs content as on_favs_boolean %}
+            {% if on_favs_boolean %}
+                <a class="block mb-10 w-2/6 text-teal-600 font-bold" href="{% url 'wishlists:toggle-content' content.pk %}?action=remove">즐겨찾기에서 제거</a>
+            {% else %}
+                <a class="block mb-10 w-2/6 text-teal-600 font-bold" href="{% url 'wishlists:toggle-content' content.pk %}?action=add">즐겨찾기에 추가</a>
+            {% endif %}
         {% else %}
-            <a class="block mb-10 w-2/6 text-teal-600 font-bold" href="{% url 'wishlists:toggle-content' content.pk %}?action=add">Save to Favourites</a>
+            <div class="block mb-10 w-2/6 text-teal-600 font-bold">즐겨찾기를 하시려면 로그인을 해주세요</div>
         {% endif %}
+
+        <br>
+        <div>
+            <b>TAGS</b> <i class="fas fa-tag"></i>
+            {% load taggit_templatetags2_tags %}
+            {% get_tags_for_object object as "tags" %}
+            {% for tag in tags %}
+            <a href="{% url 'contents:tagged_object_list' tag.name %}">{{tag.name}}</a>
+            {% endfor %}
+            &emsp;
+            <a href="{% url 'contents:tag_cloud' %}"><span class="border border-gray-500 font-bold">TagCloud</span>
+            </a>
+        </div>
+
+
 
         <p class="flex border-section">
             <h4 class="font-medium text-lg mb-5">요리명</h4>
@@ -70,13 +89,10 @@
                 {% csrf_token %}
                 {{form.review}}
                 <button class="">리뷰 업로드</button>
-            </form>
-
-
+            </form>            
         {% else %}
             <div>로그인이 필요합니다</div>
         {% endif %}
-
 
 
         <div class="mt-10">

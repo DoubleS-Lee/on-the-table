@@ -33,7 +33,7 @@ class ContentAdmin(admin.ModelAdmin):
         ),
         ("Dish Info", {"fields": ("dish", )}),
         ("How to Cook", {'classes': ('collapse',), "fields": ("cooking_ingredients", "cuisine", "cooking_utensils", )}),
-        ("Last Details", {"fields": ("user",)}),
+        ("Last Details", {"fields": ("user", "tags")}),
     )
     
     list_display = (
@@ -45,6 +45,9 @@ class ContentAdmin(admin.ModelAdmin):
         "user",
         "count_cooking_utensils",
         "count_photos",
+        "created",
+        "updated",
+        "tag_list",
 
     )
 
@@ -53,6 +56,8 @@ class ContentAdmin(admin.ModelAdmin):
         #ForgeignKey의 속성을 이용해서 user내의 다른 정보들을 가져오고 싶을때 __를 사용한다
         "user__gender",
         "cooking_utensils",
+        "created",
+        "updated",
         
     )
 
@@ -87,6 +92,13 @@ class ContentAdmin(admin.ModelAdmin):
         return obj.photos.count()
 
     count_photos.short_description = "Photo Count"    
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related('tags')
+    
+    def tag_list(self, obj):
+        return ', '.join(o.name for o in obj.tags.all())
+
 
 @admin.register(models.Photo)
 class PhotoAdmin(admin.ModelAdmin):

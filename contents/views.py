@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.views.generic import ListView, DetailView, View, UpdateView, FormView
+from django.views.generic import ListView, DetailView, View, UpdateView, FormView, TemplateView
 from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
@@ -111,6 +111,7 @@ class EditContentView(user_mixins.LoggedInOnlyView, UpdateView):
         "cuisine",
         "cooking_ingredients",
         "cooking_utensils",
+        "tags",
     )
 
     def get_object(self, queryset=None):
@@ -185,3 +186,20 @@ class CreateContentView(user_mixins.LoggedInOnlyView, FormView):
         form.save_m2m()
         messages.success(self.request, "Content Uploaded")
         return redirect(reverse("contents:detail", kwargs={"pk": content.pk}))
+
+
+class TagCloudTV(TemplateView):
+    template_name = 'taggit/taggit_cloud.html'
+
+
+class TaggedObjectLV(ListView):
+    template_name = 'taggit/taggit_content_list.html'
+    model = models.Content
+
+    def get_queryset(self):
+        return models.Content.objects.filter(tags__name=self.kwargs.get('tag'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tagname'] = self.kwargs['tag']
+        return context
