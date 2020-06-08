@@ -20,6 +20,7 @@ class HomeView(ListView):
     ordering = "created"
     context_object_name = "contents_group"
 
+
 class ContentDetail(DetailView):
 
     """ ContentDetail Definition """
@@ -38,6 +39,7 @@ def content_detail(request, pk):
     except models.Content.DoesNotExist:
         raise Http404()
 """
+
 
 class SearchView(View):
 
@@ -99,6 +101,7 @@ class SearchView(View):
         else:
             form = forms.SearchForm()
         return render(request, "contents/search.html", {"form": form})
+
 
 class EditContentView(user_mixins.LoggedInOnlyView, UpdateView):
 
@@ -173,6 +176,7 @@ class AddPhotoView(user_mixins.LoggedInOnlyView, FormView):
         messages.success(self.request, "Photo Uploaded")
         return redirect(reverse("contents:photos", kwargs={"pk": pk}))
 
+
 class CreateContentView(user_mixins.LoggedInOnlyView, FormView):
 
     form_class = forms.CreateContentForm
@@ -203,3 +207,4 @@ class TaggedObjectLV(ListView):
         context = super().get_context_data(**kwargs)
         context['tagname'] = self.kwargs['tag']
         return context
+
