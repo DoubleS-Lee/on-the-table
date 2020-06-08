@@ -110,12 +110,21 @@
                                 <span class="font-medium">{{review.user.nickname}}</span>
                                 <span class="text-sm text-gray-500">{{review.created|date:'d F Y'}}</span>
                                 {% if review.user.pk == user.pk %}
-                                    <a href="{% url 'reviews:delete-review' content.pk review.pk %}"><span class="border border-gray-500 font-bold">리뷰삭제</span>
+                                    <a href="{% url 'reviews:delete-review' content.pk review.pk %}"><span class="border border-gray-500 font-bold">삭제</span>
                                     </a>
                                 {% endif %}
                             </div>
                         </div>
                         <p>{{review.review}}</p>
+
+                        {% if review.user.pk == user.pk %}                                    
+                            <form action = "{% url 'reviews:edit-review' content.pk review.pk %}" method="POST" class="" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="text" value={{review.review}} name="review"></input>
+                                <button type="submit" class="btn bg-pink-500 text-white">수정</button>
+                            </form>
+                        {% endif %}
+
                     </div>
                 {% endfor %}    
             </div>

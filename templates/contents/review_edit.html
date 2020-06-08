@@ -1,0 +1,11 @@
+{% extends "contents/content_detail.html" %}
+
+{% block review_edit %}
+
+    <form action = "{% url 'reviews:edit-review' content.pk review.pk %}" method="POST" class="" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" value={{review.review}} name="review"></input>
+        <button type="submit" class="btn bg-pink-500 text-white">리뷰 업로드</button>
+    </form>
+
+{% endblock review_edit %}
