@@ -7,9 +7,9 @@ class Command(BaseCommand):
     help = "This command creates superuser"
 
     def handle(self, *args, **options):
-        admin = User.objects.get_or_none(username="DoubleSLee")
+        admin = User.objects.get_or_none(username="admin")
         if not admin:
-            User.objects.create_superuser("DoubleSLee", "lss8825@gmail.com", "siss071001!")
+            User.objects.create_superuser("admin", "lss8825@gmail.com", "asdf153!")
             self.stdout.write(self.style.SUCCESS(f"Superuser Created"))
         else:
             self.stdout.write(self.style.SUCCESS(f"Superuser Exists"))
