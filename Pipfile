@@ -20,6 +20,8 @@ pipenv-to-requirements = "*"
 psycopg2 = "*"
 psycopg2-binary = "*"
 sentry-sdk = "==0.14.4"
+django-storages = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.7"
