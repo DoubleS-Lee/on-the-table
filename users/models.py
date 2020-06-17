@@ -7,6 +7,7 @@ from django.shortcuts import reverse
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
 from django.template.loader import render_to_string
+from core import managers as core_managers
 
 
 #abstract는 코드내에서만 잠깐쓰이고 데이터베이스에 저장되지는 않는다
@@ -31,7 +32,8 @@ class User(AbstractUser):
     birthdate= models.DateField(blank=True, null=True)
     nationality = CountryField(blank=True)
     
-    
+    objects = core_managers.CustomUserManager()
+
     def get_absolute_url(self):
         return reverse("users:profile", kwargs={"pk": self.pk})
 
