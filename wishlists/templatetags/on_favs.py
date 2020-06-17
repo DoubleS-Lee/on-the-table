@@ -12,7 +12,7 @@ def on_favs(context, content):
     the_list = wishlist_models.Wishlist.objects.get_or_none(
         user=user, name="My Favourites Houses"
     )
-    if not the_list.contents.all():
+    if not the_list.contents:
         pass
     else:
         return content in the_list.contents.all()
