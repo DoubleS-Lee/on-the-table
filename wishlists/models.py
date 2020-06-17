@@ -7,7 +7,7 @@ class Wishlist(core_models.TimeStampedModel):
 
     name = models.CharField(max_length=80)
     user = models.OneToOneField("users.User", related_name="wishlist", on_delete=models.CASCADE)
-    contents = models.ManyToManyField("contents.Content", related_name="wishlists", blank=True)
+    contents = models.ManyToManyField("contents.Content", related_name="wishlists", blank=True, null=True)
 
     def __str__(self):
         return self.name
