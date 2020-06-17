@@ -7,8 +7,11 @@ register = template.Library()
 
 @register.simple_tag(takes_context=True)
 def on_favs(context, content):
-    user = context.request.user
-    the_list = wishlist_models.Wishlist.objects.get_or_none(
-        user=user, name="My Favourites Houses"
-    )
-    return content in the_list.contents.all()
+    if contents:
+        user = context.request.user
+        the_list = wishlist_models.Wishlist.objects.get_or_none(
+            user=user, name="My Favourites Houses"
+        )
+        return content in the_list.contents.all()
+    else:
+        pass
