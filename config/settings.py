@@ -167,9 +167,8 @@ TAGGIT_CASE_INSENSITIVE = True
 
 TAGGIT_LIMIT = 50
 
+
 # Sentry
-
-
 
 if not DEBUG:
 

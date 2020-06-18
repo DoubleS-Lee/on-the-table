@@ -21,6 +21,25 @@ class CreatePhotoForm(forms.ModelForm):
         photo.content = content
         photo.save()
 
+class CreateContentForm(forms.ModelForm):
+    class Meta:
+        model = models.Content
+        fields = (
+            "title",
+            "dish",
+            "description",
+            "cuisine",
+            "cooking_ingredients",
+            "cooking_utensils",
+            "tags",
+        )
+        labels = {
+            'title': ('제목'),
+        }
+        
+    def save(self, *args, **kwargs):
+        content = super().save(commit=False)
+        return content
 
 class CreateContentForm(forms.ModelForm):
     class Meta:
@@ -34,6 +53,9 @@ class CreateContentForm(forms.ModelForm):
             "cooking_utensils",
             "tags",
         )
+        labels = {
+            'title': ('제목'),
+        }
 
     def save(self, *args, **kwargs):
         content = super().save(commit=False)
