@@ -46,6 +46,7 @@ def edit_review(request, content_pk, review_pk):
         comment.review = request.POST['review']
         comment.content = content_models.Content.objects.get(pk=content_pk) # id로 객체 가져오기
         comment.user = request.user
+       
         if len(comment.review) > 0:
             comment.save()
         else:

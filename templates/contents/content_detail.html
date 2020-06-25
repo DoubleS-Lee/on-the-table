@@ -1,6 +1,7 @@
 {% extends "base.html" %}
-{% load on_favs %}
 
+{% load static %}
+{% load on_favs %}
 
 {% block page_title %}
     Content
@@ -85,7 +86,7 @@
 
         <div>댓글 작성</div>
             {% if user.is_authenticated %}
-                <form action = "{% url 'reviews:create_review' content.id %}" method="POST" class="" enctype="multipart/form-data">
+                <form action = "{% url 'reviews:create_review' content.id %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input type="hidden" value="{{content.id}}" name="content"></input>
                     <input type="text" name="review"></input>
@@ -110,18 +111,22 @@
                                 <span class="font-medium">{{review.user.nickname}}</span>
                                 <span class="text-sm text-gray-500">{{review.created|date:'d F Y'}}</span>
                                 {% if review.user.pk == user.pk %}
-                                    <a href="{% url 'reviews:delete-review' content.pk review.pk %}"><span class="border border-gray-500 font-bold">삭제</span>
-                                    </a>
+                                <div class = "inline flex">
+                                    <input type="hidden" value="{{review.pk}}" name="review"></input>                                    
+                                    <button class="inline flex py-1 px-2 border border-gray-500 font-bold showing commentEditBtn" value="{{review.pk}}">수정</button>
+                                    <a href="{% url 'reviews:delete-review' content.pk review.pk %}" class="inline flex ml-2 py-1 px-2 border border-gray-500 font-bold">삭제
+                                    </a>             
+                                </div>                  
                                 {% endif %}
                             </div>
                         </div>
                         <p>{{review.review}}</p>
 
                         {% if review.user.pk == user.pk %}                                    
-                            <form action = "{% url 'reviews:edit-review' content.pk review.pk %}" method="POST" class="" enctype="multipart/form-data">
+                            <form action = "{% url 'reviews:edit-review' content.pk review.pk %}" class="" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                <input type="text" value={{review.review}} name="review"></input>
-                                <button type="submit" class="btn bg-pink-500 text-white">수정</button>
+                                <input type="text" class="commentEInput noShowing" value="{{review.review}}" name="review"></input>
+                                <button type="submit" value="{{review.pk}}" class="btn bg-pink-500 text-white commentEIBtn noShowing">업로드</button>
                             </form>
                         {% endif %}
 
@@ -136,4 +141,5 @@
         {% endif %}
     </div>
 </div>
+<script src="{% static 'js/reviews.js' %}"></script>
 {% endblock contents_list %}
