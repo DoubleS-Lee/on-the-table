@@ -36,7 +36,7 @@ class CreateContentForm(forms.ModelForm):
         labels = {
             'title': ('제목'),
         }
-        
+
     def save(self, *args, **kwargs):
         content = super().save(commit=False)
         return content
