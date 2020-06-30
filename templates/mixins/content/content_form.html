@@ -6,7 +6,7 @@
             <span class="text-red-700 font-medium text-sm">{{error}}</span> 
         {% endfor %}
     {% endif %}
-
+    
     {% for field in form %}
         {% include 'mixins/content/content_input.html' with field=field %}
     {% endfor %}

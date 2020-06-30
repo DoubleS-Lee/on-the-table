@@ -12,7 +12,8 @@ class SearchForm(forms.Form):
 class CreatePhotoForm(forms.ModelForm):
     class Meta:
         model = models.Photo
-        fields = ("caption", "file")
+        fields = ("file",)
+        labels = {"file":"사진",}
 
     def save(self, pk, *args, **kwargs):
         photo = super().save(commit=False)
@@ -35,6 +36,12 @@ class CreateContentForm(forms.ModelForm):
         )
         labels = {
             'title': ('제목'),
+            "dish": ('요리명'),
+            "description": ('내용'),
+            "cuisine": ('요리법'),
+            "cooking_ingredients": ('요리재료'),
+            "cooking_utensils": ('요리기구'),
+            "tags": ('태그'),
         }
 
     def save(self, *args, **kwargs):

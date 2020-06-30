@@ -138,6 +138,7 @@
     <div class="w-1/3">
         {% if content.user == user %}
             <a href="{% url 'contents:edit' content.pk %}" class="btn-link block">글 수정</a>
+            <a href="{% url 'contents:delete-content' content.pk %}" class="btn-link block mt-5">글 삭제</a>
         {% endif %}
     </div>
 </div>

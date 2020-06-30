@@ -157,7 +157,7 @@ class EditPhotoView(user_mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateVie
     template_name = "contents/photo_edit.html"
     pk_url_kwarg = "photo_pk"
     success_message = "Photo Updated"
-    fields = ("caption", "file")
+    fields = ("file")
 
     def get_success_url(self):
         content_pk = self.kwargs.get("content_pk")
@@ -168,7 +168,7 @@ class AddPhotoView(user_mixins.LoggedInOnlyView, FormView):
 
     model = models.Photo
     template_name = "contents/photo_create.html"
-    fields = ("caption", "file")
+    fields = ("file")
     form_class = forms.CreatePhotoForm
 
     def form_valid(self, form):
@@ -198,42 +198,47 @@ class AddPhotoView(user_mixins.LoggedInOnlyView, FormView):
 @login_required
 def CreateContentView(request):
     # modelformset_factory 함수 사용(extra로 최대 업로드할 수 있는 이미지 개수 설정)
-    CreatePhotoFormSet = modelformset_factory(models.Photo, form=forms.CreatePhotoForm)
+    CreatePhotoFormSet = modelformset_factory(models.Photo, form=forms.CreatePhotoForm, min_num=1)
 
     if request.method == "POST":
-        stay_form = forms.CreateContentForm(request.POST, request.FILES)
+        content_form = forms.CreateContentForm(request.POST, request.FILES)
         formset = CreatePhotoFormSet(request.POST, request.FILES, queryset=models.Photo.objects.none())
         #print(formset)
         # form validation
-        if stay_form.is_valid() and formset.is_valid():
-            stay_form = stay_form.save(commit=False)
-            stay_form.user = request.user
-            stay_form.save()
+        if content_form.is_valid() and formset.is_valid():
+            content_form = content_form.save(commit=False)
+            content_form.user = request.user
+            content_form.save()
             for form in formset.cleaned_data:
                 # 유저가 모든 이미지들을 업로드하지 않았을 경우 crash 방지
                 if form:
-                    print(form)
                     image = form['file']
-                    photo = models.Photo(content=stay_form, file=image)
+                    photo = models.Photo(content=content_form, file=image)
                     photo.save()
-            # urls.py에서 app_name이 stay이고, name이 stay_list인 url로 이동
             return redirect(reverse("core:home"))
         #else:
-            #print(stay_form.errors, formset.errors)
+            #print(content_form.errors, formset.errors)
     else:
-        # method가 POST가 아닌 경우, 즉 처음 stay_create url로 이동한 경우
-        stay_form = forms.CreateContentForm()
+        # method가 POST가 아닌 경우
+        content_form = forms.CreateContentForm()
         formset = CreatePhotoFormSet(queryset=models.Photo.objects.none())
 
 
-    return render(request, 'contents/content_create.html', {'stay_form':stay_form, 'formset':formset})
+    return render(request, 'contents/content_create.html', {'content_form':content_form, 'formset':formset})
 
-
-
-
-
-
-
+@login_required
+def delete_content(request, content_pk):
+    user = request.user
+    try:
+        content = models.Content.objects.get(pk=content_pk)
+        if content.user.pk != user.pk:
+            messages.error(request, "Cant delete that content")
+        else:
+            models.Content.objects.filter(pk=content_pk).delete()
+            messages.success(request, "Content Deleted")
+        return redirect(reverse("core:home"))
+    except models.Content.DoesNotExist:
+        return redirect(reverse("core:home"))
 
 
 class TagCloudTV(TemplateView):

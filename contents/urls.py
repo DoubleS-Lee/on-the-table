@@ -22,4 +22,9 @@ urlpatterns = [
     path("<int:pk>/edit/", views.EditContentView.as_view(), name="edit"),
     path("tag/", views.TagCloudTV.as_view(), name='tag_cloud'),
     path('tag/<str:tag>/', views.TaggedObjectLV.as_view(), name='tagged_object_list'),
+    path(
+        "<int:content_pk>/delete/",
+        views.delete_content,
+        name="delete-content",
+    ),
 ]

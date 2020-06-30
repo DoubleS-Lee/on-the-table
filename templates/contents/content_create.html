@@ -10,20 +10,19 @@
 {% block contents_list %}
 
     <div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
+        
         <div>
-            <form id="stay_form" method="post" action="" enctype="multipart/form-data">
+            <form id="content_form" method="post" action="" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ stay_form.as_p }}
+                {{ content_form.as_p }}
+                <div class="mt-3"></div>
                 {{ formset.management_form }}
                 {% for form in formset %}
                     {{ form }}
                 {% endfor %}
-                <div style="height:30px;"></div>
-                <input type="submit" name="submit" value="upload" />
+                <div class="mt-5"></div>
+                <input class="btn bg-pink-500 text-white" type="submit" name="submit" value="업데이트" />
             </form>
-        </div>
-        
-        {% include 'mixins/content/content_form.html' with form=form cta="업데이트" %}
-        
+        </div>        
     </div>
 {% endblock contents_list %} 
