@@ -1,8 +1,8 @@
 from django.views.generic import FormView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordChangeView
-from django.shortcuts import redirect, reverse
-from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect, reverse, get_object_or_404
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.messages.views import SuccessMessageMixin
 from . import forms, models, mixins
 from django.contrib import messages
@@ -107,3 +107,15 @@ class UpdatePasswordView(
     #비번 바꾸면 처리해주는 함수
     def get_success_url(self):
         return self.request.user.get_absolute_url()
+
+
+def follow(request, user_id):
+    people = get_object_or_404(get_user_model(), id=user_id)
+    if request.user in people.followers.all():
+        # people을 unfollow 하기
+        people.followers.remove(request.user)
+    else:
+        # 1. people을 follow 하기
+        people.followers.add(request.user)
+    
+    return redirect('users:profile', user_id)

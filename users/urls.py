@@ -10,4 +10,5 @@ urlpatterns = [
     path("<int:pk>/", views.UserProfileView.as_view(), name="profile"),
     path("update-profile/", views.UpdateProfileView.as_view(), name="update"),
     path("update-passwod/", views.UpdatePasswordView.as_view(), name="password"),
+    path('follow/<int:user_id>/', views.follow, name='follow'),
 ]

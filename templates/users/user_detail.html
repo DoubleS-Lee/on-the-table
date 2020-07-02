@@ -16,6 +16,32 @@
 
         <span class="text-lg mb-5">{{user_obj.bio}}</span>
 
+        <div>
+            {% if user != user_obj %}
+                {% if user in user_obj.followers.all %}
+                    <a href="{% url 'users:follow' user_obj.id %}">UnFollow</a>
+                {% else %}
+                    <a href="{% url 'users:follow' user_obj.id %}">Follow</a>
+                {% endif %}
+            {% else %}
+            <div>
+                <div>내가 팔로우하는 유저 : </div>
+                    {% for follow_people in user.followings.all%}
+                        {{follow_people}},
+                    {% endfor %}
+                <div>나를 팔로우하는 유저 : </div>
+                {% for follow_me in user.followers.all%}
+                    {{follow_me}},
+                {% endfor %}
+
+                <div>
+                    <strong> 팔로워 수: </strong> {{ user.followers.count }}
+                    <strong> 내가 팔로우하는 유저수: </strong> {{ user.followings.count }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
         {% if user == user_obj %}
             <a href="{% url 'users:update' %}" class="btn-link">프로필 수정</a>
         {% endif %}

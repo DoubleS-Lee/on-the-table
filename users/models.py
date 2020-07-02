@@ -1,4 +1,3 @@
-import uuid
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django_countries.fields import CountryField
@@ -31,7 +30,8 @@ class User(AbstractUser):
     bio = models.TextField(blank=True)
     birthdate= models.DateField(blank=True, null=True)
     nationality = CountryField(blank=True)
-    
+    followers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followings')
+
     objects = core_managers.CustomUserManager()
 
     def get_absolute_url(self):
