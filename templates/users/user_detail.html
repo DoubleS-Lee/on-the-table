@@ -27,13 +27,16 @@
             <div>
                 <div>내가 팔로우하는 유저 : </div>
                     {% for follow_people in user.followings.all%}
-                        {{follow_people}},
+                        <a href="{% url 'users:profile' follow_people.pk %}" class="flex-col items-center">
+                            {{follow_people}},
+                        </a>
                     {% endfor %}
                 <div>나를 팔로우하는 유저 : </div>
-                {% for follow_me in user.followers.all%}
-                    {{follow_me}},
-                {% endfor %}
-
+                    {% for follow_me in user.followers.all%}
+                        <a href="{% url 'users:profile' follow_me.pk %}" class="flex-col items-center">
+                            {{follow_me}},
+                        </a>
+                    {% endfor %}
                 <div>
                     <strong> 팔로워 수: </strong> {{ user.followers.count }}
                     <strong> 내가 팔로우하는 유저수: </strong> {{ user.followings.count }}
