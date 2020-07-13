@@ -168,7 +168,7 @@ class AddPhotoView(user_mixins.LoggedInOnlyView, FormView):
 
     model = models.Photo
     template_name = "contents/photo_create.html"
-    fields = ("file")
+    fields = ("file",)
     form_class = forms.CreatePhotoForm
 
     def form_valid(self, form):
@@ -201,7 +201,7 @@ def CreateContentView(request):
     CreatePhotoFormSet = modelformset_factory(models.Photo, form=forms.CreatePhotoForm, min_num=1)
 
     if request.method == "POST":
-        content_form = forms.CreateContentForm(request.POST, request.FILES)
+        content_form = forms.CreateContentForm(request.POST)
         formset = CreatePhotoFormSet(request.POST, request.FILES, queryset=models.Photo.objects.none())
         #print(formset)
         # form validation
@@ -215,15 +215,13 @@ def CreateContentView(request):
                     image = form['file']
                     photo = models.Photo(content=content_form, file=image)
                     photo.save()
-            return redirect(reverse("core:home"))
+        return redirect(reverse("core:home"))
         #else:
             #print(content_form.errors, formset.errors)
     else:
         # method가 POST가 아닌 경우
         content_form = forms.CreateContentForm()
         formset = CreatePhotoFormSet(queryset=models.Photo.objects.none())
-
-
     return render(request, 'contents/content_create.html', {'content_form':content_form, 'formset':formset})
 
 @login_required
