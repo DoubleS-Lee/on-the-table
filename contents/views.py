@@ -1,6 +1,6 @@
 from django.http import Http404
 from django.views.generic import ListView, DetailView, View, UpdateView, FormView, TemplateView
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -255,3 +255,14 @@ class TaggedObjectLV(ListView):
         context['tagname'] = self.kwargs['tag']
         return context
 
+
+def like(request, content_pk):
+    content = get_object_or_404(models.Content, pk=content_pk)
+    
+    if request.user in content.like_users.all():
+        #좋아요 취소
+        content.like_users.remove(request.user)
+    else:
+        content.like_users.add(request.user)
+    
+    return redirect(reverse("core:home"))

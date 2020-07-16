@@ -27,4 +27,5 @@ urlpatterns = [
         views.delete_content,
         name="delete-content",
     ),
+    path('<int:content_pk>/like/', views.like, name='like')
 ]

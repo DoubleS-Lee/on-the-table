@@ -7,6 +7,17 @@
             <i class="fas fa-drumstick-bite mt-1 px-1" style ="color:rgb(245, 141, 23)"></i>
             <span class="font-semibold pl-1 w-7/8 block truncate">{{content.dish}}</span>   
         </div>
+        <a href="{% url 'contents:like' content.pk %}">
+            {% if user in content.like_users.all %}
+              <a href="{% url 'contents:like' content.pk %}"><i class="fas fa-heart"></i></a>
+            {% else %}
+              <a href="{% url 'contents:like' content.pk %}"><i class="far fa-heart"></i></a>
+            {% endif %}
+          </a>
+          <p class="">
+              <!--좋아요 갯수 카운트-->
+              {{ content.like_users.count }} 명이 좋아합니다.
+          </p>
         <span class="text-sm text-gray-600 ">{{content.user}}</span>  
     </div>
     <div class="flex justify-between items-center overflow-hidden truncate">
